@@ -9,35 +9,37 @@ import { indiaStatesData, imfData } from './data/dummyData';
 const App: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('india-states');
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); // Start with SignIn
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(false); 
   const [showSignUp, setShowSignUp] = useState<boolean>(false);
   const itemsPerPage = 10;
 
   const data = selectedCategory === 'india-states' ? indiaStatesData : imfData;
 
-  // Conditional rendering for SignIn and SignUp pages
   if (!isSignedIn) {
-    if (showSignUp) {
-      return (
-        <SignUp 
-          onSignUpSuccess={() => setShowSignUp(false)} 
-          onSwitchToSignIn={() => setShowSignUp(false)} 
-        />
-      );
-    }
     return (
-      <SignIn
-        onSignIn={() => setIsSignedIn(true)} // Simulate successful login
-        onSwitchToSignUp={() => setShowSignUp(true)} // Switch to SignUp
-      />
+      <div className="min-h-screen bg-gray-100 flex flex-col">
+        <Header />
+        <div className="flex-grow flex justify-center items-center">
+          {showSignUp ? (
+            <SignUp
+              onSignUpSuccess={() => setShowSignUp(false)}
+              onSwitchToSignIn={() => setShowSignUp(false)}
+            />
+          ) : (
+            <SignIn
+              onSignIn={() => setIsSignedIn(true)} 
+              onSwitchToSignUp={() => setShowSignUp(true)} 
+            />
+          )}
+        </div>
+      </div>
     );
   }
 
-  // Render main application after successful login
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gray-100 flex flex-col">
       <Header />
-      <div className="flex">
+      <div className="flex flex-grow">
         <Sidebar
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
